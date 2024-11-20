@@ -114,7 +114,9 @@ def score_address(address):
 
     return total_score
 
+'''
 # Example usage
 address = "baden baden"
 score = score_address(address)
 print("Final Score:", score)
+'''
