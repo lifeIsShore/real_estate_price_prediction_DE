@@ -1,0 +1,6 @@
+{
+    "input_csv_path": "",
+    "output_found_path": "",
+    "batch_size": 1000,
+    "max_workers": 10
+}
