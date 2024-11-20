@@ -3,40 +3,40 @@ from tkinter import filedialog, messagebox
 import json
 import os
 
-# Config dosyasını yükleme
+# Config loading
 def load_config(config_path="config.json"):
     if os.path.exists(config_path):
         with open(config_path, "r") as config_file:
             return json.load(config_file)
     else:
-        return {}  # Config dosyası yoksa boş bir dictionary döndürüyoruz.
+        return {}  # Config turns into empthy dict.
 
-# Config dosyasına kaydetme
+# Config saving
 def save_config(config, config_path="config.json"):
     with open(config_path, "w") as config_file:
         json.dump(config, config_file, indent=4)
 
-# Dosya yolu seçme için bir fonksiyon
+# choose path 
 def browse_file(entry_widget):
     file_path = filedialog.askopenfilename()
     if file_path:
-        entry_widget.delete(0, tk.END)  # Var olan metni sil
-        entry_widget.insert(0, file_path)  # Yeni yolu ekle
+        entry_widget.delete(0, tk.END)  # delete
+        entry_widget.insert(0, file_path)  # add
 
 def browse_folder(entry_widget):
     folder_path = filedialog.askdirectory()
     if folder_path:
-        entry_widget.delete(0, tk.END)  # Var olan metni sil
-        entry_widget.insert(0, folder_path)  # Yeni yolu ekle
+        entry_widget.delete(0, tk.END)  # delete
+        entry_widget.insert(0, folder_path)  # add
 
-# UI arayüzü
+# UI interface
 def create_ui():
     config = load_config()
 
     window = tk.Tk()
     window.title("Config Settings")
 
-    # Dosya yolu inputları ve etiketleri
+    # labels
     tk.Label(window, text="Input CSV Path:").grid(row=0, column=0, sticky="e")
     input_path_entry = tk.Entry(window, width=50)
     input_path_entry.grid(row=0, column=1)
@@ -63,7 +63,7 @@ def create_ui():
     max_workers_entry.grid(row=3, column=1)
     max_workers_entry.insert(0, str(config.get("max_workers", 10)))
 
-    # Kaydetme fonksiyonu
+    # save func
     def save_settings():
         config["input_csv_path"] = input_path_entry.get()
         config["output_found_path"] = output_path_entry.get()
@@ -72,16 +72,16 @@ def create_ui():
         
         save_config(config)
         
-        # Başarı mesajı
+        # success message
         messagebox.showinfo("Başarılı", "Ayarlar başarıyla kaydedildi!")
         
-        window.destroy()  # UI'yi kapat
+        window.destroy()  # close the UI
 
     save_button = tk.Button(window, text="Save Settings", command=save_settings)
     save_button.grid(row=4, column=1)
 
     window.mainloop()
 
-# Ana fonksiyon
+# main func
 if __name__ == "__main__":
     create_ui()
