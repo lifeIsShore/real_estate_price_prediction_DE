@@ -1,7 +1,8 @@
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 from geo_score import score_address  # Import the score_address function
-from far_from_center_score import calculate_distance_address_to_city_center  # Import the calculate_distance_address_to_city_center function
+from far_from_center_score import calculate_distance_address_to_city_center  # Import the distance from city center function
+from airport_dist_score import calculate_airport_distance_log  # Import the airport proximity scoring function
 import json
 import os
 
@@ -13,29 +14,42 @@ def load_config(config_path=r"C:\Users\ahmty\Desktop\Python\real_estate_price_pr
     else:
         return {}  # Return an empty dictionary if the config file does not exist
 
-# Function to process addresses and calculate scores and distance
+# Function to process addresses and calculate scores
 def process_addresses(df):
+    # Initialize columns for all scores
     df["score"] = None
-    df["distance_from_center"] = None  # Adding a new column for distance from the center
+    df["distance_from_center"] = None
+    df["airport_proximity_score"] = None
 
+    # Function to process a single row
     def process_row(row):
         address = row["full_address"]
-        score = score_address(address)
-        distance = calculate_distance_address_to_city_center(address)  # Calculate the distance from the city center
-        return score, distance  # Return both the score and distance
+        try:
+            # Calculate scores
+            score = score_address(address)
+            distance_from_center = calculate_distance_address_to_city_center(address)
+            airport_score = calculate_airport_distance_log(address)
+        except Exception as e:
+            print(f"Error processing address '{address}': {e}")
+            score, distance_from_center, airport_score = None, None, None
+        return score, distance_from_center, airport_score
 
+    # Use ThreadPoolExecutor for parallel processing
     with ThreadPoolExecutor(max_workers=10) as executor:
         results = list(executor.map(process_row, [row for _, row in df.iterrows()]))
 
-    # Add the results to separate columns
+    # Add results to DataFrame columns
     df["score"] = [result[0] for result in results]
     df["distance_from_center"] = [result[1] for result in results]
+    df["airport_proximity_score"] = [result[2] for result in results]
     return df
 
 # Save the results to a CSV file
 def save_results(df, output_found_path, batch_num):
-    df_with_scores = df.dropna(subset=["score"])  # Save only rows with valid scores
-    df_with_scores.to_csv(f"{output_found_path}_batch_{batch_num}.csv", index=False, encoding="windows-1252")
+    # Save rows with valid scores only
+    df_with_scores = df.dropna(subset=["score", "distance_from_center", "airport_proximity_score"])
+    output_file = f"{output_found_path}_batch_{batch_num}.csv"
+    df_with_scores.to_csv(output_file, index=False, encoding="windows-1252")
 
 # Load configuration values (paths)
 config = load_config()

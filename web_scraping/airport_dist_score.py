@@ -91,6 +91,7 @@ def calculate_airport_distance_log(address):
         print(f"Error: {e}")
         return None
 
+'''
 address = "Zwergsteigstraße 4, 78048 Villingen-Schwenningen"  # Example address
 log_distance = calculate_airport_distance_log(address)
 
@@ -98,3 +99,4 @@ if log_distance is not None:
     print(f"The log-scaled distance to the nearest airport for '{address}': {log_distance}")
 else:
     print("Could not calculate the airport distance.")
+'''
