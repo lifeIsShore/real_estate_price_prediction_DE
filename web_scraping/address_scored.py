@@ -1,7 +1,7 @@
 import pandas as pd
 from concurrent.futures import ThreadPoolExecutor
 from geo_score import score_address  # score_address fonksiyonunu import etme
-from far_from_center import calculate_distance_address_to_city_center  # far_from_center fonksiyonunu import etme
+from far_from_center_score import calculate_distance_address_to_city_center  # far_from_center fonksiyonunu import etme
 
 def process_addresses(df):
     df["score"] = None
