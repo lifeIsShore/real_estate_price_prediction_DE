@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import filedialog
+from tkinter import filedialog, messagebox
 import json
 import os
 
@@ -71,6 +71,10 @@ def create_ui():
         config["max_workers"] = int(max_workers_entry.get())
         
         save_config(config)
+        
+        # Başarı mesajı
+        messagebox.showinfo("Başarılı", "Ayarlar başarıyla kaydedildi!")
+        
         window.destroy()  # UI'yi kapat
 
     save_button = tk.Button(window, text="Save Settings", command=save_settings)
