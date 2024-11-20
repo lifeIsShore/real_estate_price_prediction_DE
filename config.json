@@ -1,6 +1,6 @@
 {
-    "input_csv_path": "",
-    "output_found_path": "",
+    "input_csv_path": "C:/Users/ahmty/Desktop/Python/real_estate_price_prediction_DE/real_estate_price_prediction_DE/csv_input/input_dataset/cleansed_ready_for model.csv",
+    "output_found_path": "C:/Users/ahmty/Desktop/Python/real_estate_price_prediction_DE/real_estate_price_prediction_DE/csv_output",
     "batch_size": 1000,
     "max_workers": 10
 }
