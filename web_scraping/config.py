@@ -1,64 +1,83 @@
 import tkinter as tk
 from tkinter import filedialog
 import json
+import os
 
-# Konfigürasyon dosyasının kaydedileceği dosya yolu
-config_file = "config.json"
+# Config dosyasını yükleme
+def load_config(config_path="config.json"):
+    if os.path.exists(config_path):
+        with open(config_path, "r") as config_file:
+            return json.load(config_file)
+    else:
+        return {}  # Config dosyası yoksa boş bir dictionary döndürüyoruz.
 
-def save_config():
-    # Kullanıcıdan dosya yollarını al
-    input_csv_path = input_csv_entry.get()
-    output_found_path = output_found_entry.get()
+# Config dosyasına kaydetme
+def save_config(config, config_path="config.json"):
+    with open(config_path, "w") as config_file:
+        json.dump(config, config_file, indent=4)
 
-    # Konfigürasyon verisini oluştur
-    config_data = {
-        "input_csv_path": input_csv_path,
-        "output_found_path": output_found_path
-    }
+# Dosya yolu seçme için bir fonksiyon
+def browse_file(entry_widget):
+    file_path = filedialog.askopenfilename()
+    if file_path:
+        entry_widget.delete(0, tk.END)  # Var olan metni sil
+        entry_widget.insert(0, file_path)  # Yeni yolu ekle
 
-    # Konfigürasyon verisini JSON dosyasına kaydet
-    with open(config_file, 'w') as json_file:
-        json.dump(config_data, json_file, indent=4)
-    
-    # Kullanıcıya bilgilendirme mesajı
-    status_label.config(text="Configuration saved successfully!", fg="green")
+def browse_folder(entry_widget):
+    folder_path = filedialog.askdirectory()
+    if folder_path:
+        entry_widget.delete(0, tk.END)  # Var olan metni sil
+        entry_widget.insert(0, folder_path)  # Yeni yolu ekle
 
-def browse_input_csv():
-    # Dosya seçici penceresi aç
-    file_path = filedialog.askopenfilename(title="Select Input CSV File", filetypes=[("CSV files", "*.csv")])
-    input_csv_entry.delete(0, tk.END)  # Mevcut değeri sil
-    input_csv_entry.insert(0, file_path)  # Yeni dosya yolunu ekle
+# UI arayüzü
+def create_ui():
+    config = load_config()
 
-def browse_output_found():
-    # Dosya seçici penceresi aç
-    folder_path = filedialog.askdirectory(title="Select Output Folder")
-    output_found_entry.delete(0, tk.END)  # Mevcut değeri sil
-    output_found_entry.insert(0, folder_path)  # Yeni klasör yolunu ekle
+    window = tk.Tk()
+    window.title("Config Settings")
 
-# Ana pencereyi oluştur
-root = tk.Tk()
-root.title("Configuration UI")
+    # Dosya yolu inputları ve etiketleri
+    tk.Label(window, text="Input CSV Path:").grid(row=0, column=0, sticky="e")
+    input_path_entry = tk.Entry(window, width=50)
+    input_path_entry.grid(row=0, column=1)
+    input_path_entry.insert(0, config.get("input_csv_path", ""))
 
-# Dosya yolu girişleri ve etiketleri
-tk.Label(root, text="Input CSV Path:").grid(row=0, column=0, padx=10, pady=10, sticky="w")
-input_csv_entry = tk.Entry(root, width=50)
-input_csv_entry.grid(row=0, column=1, padx=10, pady=10)
-input_csv_button = tk.Button(root, text="Browse", command=browse_input_csv)
-input_csv_button.grid(row=0, column=2, padx=10, pady=10)
+    browse_input_button = tk.Button(window, text="Browse", command=lambda: browse_file(input_path_entry))
+    browse_input_button.grid(row=0, column=2)
 
-tk.Label(root, text="Output Folder Path:").grid(row=1, column=0, padx=10, pady=10, sticky="w")
-output_found_entry = tk.Entry(root, width=50)
-output_found_entry.grid(row=1, column=1, padx=10, pady=10)
-output_found_button = tk.Button(root, text="Browse", command=browse_output_found)
-output_found_button.grid(row=1, column=2, padx=10, pady=10)
+    tk.Label(window, text="Output Folder Path:").grid(row=1, column=0, sticky="e")
+    output_path_entry = tk.Entry(window, width=50)
+    output_path_entry.grid(row=1, column=1)
+    output_path_entry.insert(0, config.get("output_found_path", ""))
 
-# Kaydet butonu
-save_button = tk.Button(root, text="Save Configuration", command=save_config)
-save_button.grid(row=2, column=1, padx=10, pady=20)
+    browse_output_button = tk.Button(window, text="Browse", command=lambda: browse_folder(output_path_entry))
+    browse_output_button.grid(row=1, column=2)
 
-# Durum etiketi
-status_label = tk.Label(root, text="", fg="red")
-status_label.grid(row=3, column=0, columnspan=3, padx=10, pady=10)
+    tk.Label(window, text="Batch Size:").grid(row=2, column=0, sticky="e")
+    batch_size_entry = tk.Entry(window, width=20)
+    batch_size_entry.grid(row=2, column=1)
+    batch_size_entry.insert(0, str(config.get("batch_size", 1000)))
 
-# Ana pencereyi başlat
-root.mainloop()
+    tk.Label(window, text="Max Workers:").grid(row=3, column=0, sticky="e")
+    max_workers_entry = tk.Entry(window, width=20)
+    max_workers_entry.grid(row=3, column=1)
+    max_workers_entry.insert(0, str(config.get("max_workers", 10)))
+
+    # Kaydetme fonksiyonu
+    def save_settings():
+        config["input_csv_path"] = input_path_entry.get()
+        config["output_found_path"] = output_path_entry.get()
+        config["batch_size"] = int(batch_size_entry.get())
+        config["max_workers"] = int(max_workers_entry.get())
+        
+        save_config(config)
+        window.destroy()  # UI'yi kapat
+
+    save_button = tk.Button(window, text="Save Settings", command=save_settings)
+    save_button.grid(row=4, column=1)
+
+    window.mainloop()
+
+# Ana fonksiyon
+if __name__ == "__main__":
+    create_ui()
