@@ -6,7 +6,7 @@ import json
 import os
 
 # Load configuration from config.json
-def load_config(config_path="config.json"):
+def load_config(config_path=r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\config.json"):
     if os.path.exists(config_path):
         with open(config_path, "r") as config_file:
             return json.load(config_file)
