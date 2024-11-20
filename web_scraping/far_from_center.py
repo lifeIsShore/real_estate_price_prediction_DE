@@ -118,7 +118,7 @@ def calculate_distance_address_to_city_center(address, country="Germany"):
     return round(distance_km, 2)
 
 # Example usage
-address = "Maxplatz, Bamberg, Germany"  # Specify the city center address
+address = "Zwergsteigstraße 4, 78048 Villingen-Schwenningen"  # Specify the city center address
 distance = calculate_distance_address_to_city_center(address)
 
 if distance is not None:
