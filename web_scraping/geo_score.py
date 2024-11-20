@@ -75,13 +75,14 @@ def score_address(address):
         place_coords = (place["lat"], place["lon"])
         distance = geodesic((lat, lon), place_coords).meters
 
+        # Previous distance sadece otobüs ve tren için uygulanır
         prev_distance = (
             geodesic(last_location[place_type], place_coords).meters
-            if place_type in last_location else float("inf")
+            if place_type in last_location and place_type in ["Bus Stop", "Train Station"] else float("inf")
         )
 
-        # New scoring logic
-        if distance <= 1000 and prev_distance > 90:
+        # Scoring logic
+        if distance <= 1000 and (place_type not in ["Bus Stop", "Train Station"] or prev_distance > 90):
             if place_type in ["Supermarket", "Convenience Store", "Variety Store"]:
                 if distance <= 100:
                     score = 20
