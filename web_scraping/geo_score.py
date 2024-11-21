@@ -116,7 +116,7 @@ def score_address(address):
 
 '''
 # Example usage
-address = "baden baden"
+address = "Schönbrunn,  Hebertshausen (85241)"
 score = score_address(address)
 print("Final Score:", score)
 '''
