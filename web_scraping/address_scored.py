@@ -55,8 +55,8 @@ def save_results(df, output_found_path, batch_num):
 config = load_config()
 
 # Assign paths from the config file
-input_csv_path = config.get("input_csv_path", r"C:\default\input.csv")  # Use default if not found
-output_found_path = config.get("output_found_path", r"C:\default\output")  # Use default if not found
+input_csv_path = r"C:/Users/ahmty/Desktop/Python/real_estate_price_prediction_DE/real_estate_price_prediction_DE/csv_input/input_dataset/cleansed_ready_for model.csv"  # Use default if not found
+output_found_path = r"C:/Users/ahmty/Desktop/Python/real_estate_price_prediction_DE/real_estate_price_prediction_DE/csv_input/input_dataset/cleansed_ready_for model2.csv"  # Use default if not found
 
 # Load data and create 'full_address' column
 df = pd.read_csv(input_csv_path, delimiter=";", encoding="windows-1252")
