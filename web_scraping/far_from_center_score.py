@@ -117,13 +117,12 @@ def calculate_distance_address_to_city_center(address, country="Germany"):
     distance_km = geodesic(address_coords, city_center_coords).kilometers
     return round(distance_km, 2)
 
-'''
+
 # Example usage
-address = "Avenue Charles de Gaulle 10 d, Berlin (13469)"  # Specify the city center address
+address = "Prenzlauer Berg,  Berlin (10437)"  # Specify the city center address
 distance = calculate_distance_address_to_city_center(address)
 
 if distance is not None:
     print(f"Distance between '{address}' and city center: {distance} km.")
 else:
     print("Distance could not be calculated.")
-'''
