@@ -9,35 +9,39 @@ INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\rea
 OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
 
 # Ayarlanabilir parametreler
-BATCH_SIZE = 1000
-MAX_THREADS = 5
-START_BATCH = 0
-MAX_RETRIES = 3
-RETRY_DELAY = 2
-
-def calculate_distance_with_retry(address, retries=MAX_RETRIES, delay=RETRY_DELAY):
-    """
-    Adresin şehir merkezine olan mesafesini hesaplar. Hata durumunda yeniden dener.
-    """
-    attempt = 0
-    while attempt < retries:
-        try:
-            return calculate_distance_address_to_city_center(address)
-        except Exception as e:
-            attempt += 1
-            print(f"Hata adres: {address}, Hata mesajı: {e}. Deneme {attempt}/{retries}.")
-            if attempt < retries:
-                time.sleep(delay)
-            else:
-                print(f"Tüm denemeler başarısız oldu, adres {address} için None döndürülecek.")
-                return None
-    return None
+BATCH_SIZE = 1000  # Her batch'te kaç satır işleneceği
+MAX_THREADS = 5  # Aynı anda çalışacak maksimum thread sayısı
+START_BATCH = 0  # İşleme başlayacağınız batch numarası
+MAX_RETRIES = 3  # Bir API çağrısında yapılacak maksimum yeniden deneme sayısı
+RETRY_DELAY = 2  # Her yeniden deneme arasındaki bekleme süresi (saniye cinsinden)
 
 def process_batch(batch_df):
     """
-    Bir batch verisi üzerinde adreslere mesafe hesaplaması yapar.
+    Bir batch verisi üzerinde adreslere Geo_Score hesaplaması yapar.
     """
-    batch_df['Distance_To_City_Center'] = batch_df['Full_Address'].apply(calculate_distance_with_retry)
+    def safe_score(address):
+        """
+        API çağrısı yapar ve hata oluşursa yeniden dener.
+        """
+        attempt = 0
+        while attempt < MAX_RETRIES:
+            try:
+                return calculate_distance_address_to_city_center(address)
+            except Exception as e:
+                attempt += 1
+                print(f"Hata adres: {address}, Hata mesajı: {e}. Deneme {attempt}/{MAX_RETRIES}.")
+                if attempt < MAX_RETRIES:
+                    time.sleep(RETRY_DELAY)  # Yeniden denemeden önce bekle
+                else:
+                    print(f"Tüm denemeler başarısız oldu, adres {address} için None döndürülecek.")
+                    return None  # Hata durumunda None döner
+        return None  # Eğer denemeler biterse None döner
+
+    # Full_Address sütunu oluştur
+    batch_df['Full_Address'] = batch_df['Street'] + ", " + batch_df['City_Code']
+    
+    # Geo_Score hesaplama
+    batch_df['Geo_Score'] = batch_df['Full_Address'].apply(safe_score)
     return batch_df
 
 def main():
@@ -53,6 +57,7 @@ def main():
 
     # İşlem yapılacak batch'leri belirle
     for batch_start in range(START_BATCH, total_batches, MAX_THREADS):
+        # MAX_THREADS kadar batch işlemini paralel olarak başlat
         batch_end = min(batch_start + MAX_THREADS, total_batches)
         futures = []
         
