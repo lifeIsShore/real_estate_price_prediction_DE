@@ -11,7 +11,7 @@ OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\re
 
 # Ayarlanabilir parametreler
 BATCH_SIZE = 1000  # Her batch'te kaç satır işleneceği
-MAX_THREADS = 5  # Aynı anda çalışacak maksimum thread sayısı
+MAX_THREADS = 10  # Aynı anda çalışacak maksimum thread sayısı
 START_BATCH = 0  # İşleme başlayacağınız batch numarası
 MAX_RETRIES = 3  # Bir API çağrısında yapılacak maksimum yeniden deneme sayısı
 RETRY_DELAY = 2  # Her yeniden deneme arasındaki bekleme süresi (saniye cinsinden)
