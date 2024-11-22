@@ -5,7 +5,8 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from far_from_center_score import calculate_distance_address_to_city_center  # Modülden fonksiyonu dahil ediyoruz
 
 # Giriş ve çıkış dosyaları
-INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address1.csv"
+#change the name of the file that will be saved
+INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address.csv"
 OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
 
 # Ayarlanabilir parametreler
@@ -26,7 +27,7 @@ def process_batch(batch_df):
         attempt = 0
         while attempt < MAX_RETRIES:
             try:
-                return calculate_distance_address_to_city_center(address)
+                return calculate_distance_address_to_city_center(address) # only diff between addres scoring geo scored is that function, that entire script is compatible for all 3 func.
             except Exception as e:
                 attempt += 1
                 print(f"Hata adres: {address}, Hata mesajı: {e}. Deneme {attempt}/{MAX_RETRIES}.")
