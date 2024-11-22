@@ -3,6 +3,9 @@ from concurrent.futures import ThreadPoolExecutor
 from geo_score import score_address  # score_address fonksiyonunu import etme
 
 
+# that is old one and not suitable for my new dataset which has only ad_id, sreet, city values. 
+# script takes those and make one address (street+city) and calculate (new function)
+
 def process_addresses(df):
     not_found_addresses = []
     df["score"] = None
