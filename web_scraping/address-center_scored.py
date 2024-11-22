@@ -7,7 +7,7 @@ from far_from_center_score import calculate_distance_address_to_city_center  # M
 # Giriş ve çıkış dosyaları
 #change the name of the file that will be saved
 INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address.csv"
-OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
+OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\ad_id-address-center_scored.csv"
 
 # Ayarlanabilir parametreler
 BATCH_SIZE = 1000  # Her batch'te kaç satır işleneceği
