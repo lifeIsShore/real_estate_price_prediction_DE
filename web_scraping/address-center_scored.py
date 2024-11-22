@@ -5,7 +5,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from far_from_center_score import calculate_distance_address_to_city_center  # Modülden fonksiyonu dahil ediyoruz
 
 # Giriş ve çıkış dosyaları
-INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address1.csv"
+INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address1.csv"
 OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
 
 # Ayarlanabilir parametreler
