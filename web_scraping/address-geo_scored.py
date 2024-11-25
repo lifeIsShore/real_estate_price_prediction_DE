@@ -14,7 +14,7 @@ MAX_THREADS = 5  # Aynı anda çalışacak maksimum thread sayısı
 START_BATCH = 0  # İşleme başlayacağınız batch numarası
 MAX_RETRIES = 3  # Bir API çağrısında yapılacak maksimum yeniden deneme sayısı
 RETRY_DELAY = 2  # Her yeniden deneme arasındaki bekleme süresi (saniye cinsinden)
-        
+         
 def process_batch(batch_df):
     """
     Bir batch verisi üzerinde adreslere Geo_Score hesaplaması yapar.
