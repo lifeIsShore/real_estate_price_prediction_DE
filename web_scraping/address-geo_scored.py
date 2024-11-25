@@ -7,7 +7,7 @@ import time
 # Giriş ve çıkış dosyaları
 INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address.csv"
 OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
-
+ 
 # Ayarlanabilir parametreler
 BATCH_SIZE = 1000  # Her batch'te kaç satır işleneceği
 MAX_THREADS = 5  # Aynı anda çalışacak maksimum thread sayısı
