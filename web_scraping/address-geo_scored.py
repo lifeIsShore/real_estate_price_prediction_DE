@@ -3,7 +3,7 @@ from geo_score import score_address
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import math
 import time
-
+ 
 # Giriş ve çıkış dosyaları
 INPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_input\input_dataset\ad_id-address.csv"
 OUTPUT_FILE = r"C:\Users\ahmty\Desktop\Python\real_estate_price_prediction_DE\real_estate_price_prediction_DE\csv_output\modified_ad_id-address.csv"
