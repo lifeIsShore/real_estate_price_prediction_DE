@@ -99,4 +99,4 @@ if log_distance is not None:
     print(f"The log-scaled distance to the nearest airport for '{address}': {log_distance}")
 else:
     print("Could not calculate the airport distance.")
-'''        
+'''         
