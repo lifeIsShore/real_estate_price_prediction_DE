@@ -92,7 +92,7 @@ def calculate_airport_distance_log(address):
         return None
 
 '''
-address = "Zwergsteigstraße 4, 78048 Villingen-Schwenningen"  # Example address
+address = "Kirchheim, Euskirchen / Kirchheim (53881)"  # Example address
 log_distance = calculate_airport_distance_log(address)
 
 if log_distance is not None:
